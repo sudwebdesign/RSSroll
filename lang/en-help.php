@@ -18,7 +18,7 @@ Edit the template file "sidebar.php". Add following code where you want to see y
 <pre>
 	&lt;h3&gt;&lt;?php eval($plxShow-&gt;callHook(&#039;showRSSrollHead&#039;)); ?&gt;&lt;/h3&gt;
 		&lt;ul&gt;
-&lt;?php eval($plxShow-&gt;callHook('showRSSroll', '&lt;h2 style="background:url(\'#icon\') no-repeat scroll 0 5px transparent;padding-left:20px;background-size:16px 16px;"&gt;
+&lt;?php eval($plxShow-&gt;callHook('showRSSroll', '&lt;h2 style="background:url(\'#icon\') no-repeat scroll 0 0 transparent;padding-left:20px;background-size:16px 16px;"&gt;
 &lt;a target="_blank" href="#url" hreflang="#langue" title="#description"&gt;#title&lt;/a&gt;
 &lt;/h2&gt;')); ?&gt;
 		&lt;/ul&gt;

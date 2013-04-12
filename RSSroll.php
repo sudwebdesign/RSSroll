@@ -3,8 +3,8 @@
  * Plugin rssroll
  *
  * @package	PLX
- * @version	1.0
- * @date	10/04/2013
+ * @version	1.1
+ * @date	12/04/2013
  * @author	i M@N
  * @based on	Rockyhorror Blogroll
  * @disclaimer	may content unexpected lulz
@@ -208,7 +208,7 @@ else {
 		if(!$this->rssList) { return; }
 		
 #		if(!isset($format)) { $format = '<h2 style="background:url(\'http://g.etfv.co/#url\') no-repeat scroll 0 5px transparent;padding-left:20px;"><a target="_blank" href="#url" hreflang="#langue" title="#description">#title</a></h2>'; }
-		if(!isset($format)) { $format = '<h2 style="background:url(\'#icon\') no-repeat scroll 0 5px transparent;padding-left:20px;background-size:16px 16px;"><a target="_blank" href="#url" hreflang="#langue" title="#description">#title</a></h2>'; }
+		if(!isset($format)) { $format = '<h2 style="background:url(\'#icon\') no-repeat scroll 0 0 transparent;padding-left:20px;background-size:16px 16px;"><a target="_blank" href="#url" hreflang="#langue" title="#description">#title</a></h2>'; }
 
 		foreach($this->rssList as $link) {
 if ($curl == 1) {
