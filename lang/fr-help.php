@@ -28,16 +28,11 @@ Editez le fichier template "sidebar.php". Ajoutez y le code suivant &agrave; l&#
 <p>&nbsp;</p>
 <h3>Utilisation</h3>
 <p>
-	Le plugin ajoute une entrée "blogroll" dans la barre des menus à gauche, dans l&#039;administration du site.<br>
-	Vous pouvez administrer vos liens à partir de cette page.	
+Le plugin ajoute une entrée "RSSroll" dans la barre des menus de l&#039;administration du site à gauche depuis laquelle vous pouvez administrer vos RSS.
 </p>
 
 <p>&nbsp;</p>
 <h3>Configuration</h3>
 <p>
-	Dans la configuration du plugin (Paramètres > plugins > RSSroll configuration), vous pouvez:
-	<ul>
-		<li>Changer l&#039;emplacement du fichier xml</li>
-		<li>Changer le titre qui s&#039;affiche dans la sidebar de la partie publique.</li>
-	</ul>
+Dans la configuration du plugin (Paramètres > plugins > RSSroll configuration), vous pouvez changer l&#039;emplacement du fichier xml de configuration et le titre qui s&#039;affiche dans la sidebar de la partie publique.
 </p>

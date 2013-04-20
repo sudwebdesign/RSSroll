@@ -28,16 +28,11 @@ Edit the template file "sidebar.php". Add following code where you want to see y
 <p>&nbsp;</p>
 <h3>Usage</h3>
 <p>
-	This plugin add an entry "RSSroll" on the left side, of the site administration.<br>
-	You can manage your link on this page.
+This plugin adds an entry "RSSroll" on the left side of the site administration page to manage your RSS.
 </p>
 
 <p>&nbsp;</p>
 <h3>Configuration</h3>
 <p>
-	In the configuration part of the plugin (Paramètres > plugins > RSSroll configuration), you can:
-	<ul>
-		<li>Change the xml file location</li>
-		<li>Change the title that appears in the sidebar of the public part.</li>
-	</ul>
+in the configuration part of the plugin (Parameters > plugins > RSSroll configuration), you can change the configuration xml file location and the title that appears in the sidebar of the public part.
 </p>
