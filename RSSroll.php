@@ -196,8 +196,6 @@ else {
 	echo '<script type="text/javascript">
 /* <![CDATA[ */
 	!window.jQuery && document.write(\'<script type="text/javascript" src="<?php echo PLX_PLUGINS;?>jquery/jquery.min.js"><\/script>\');
-/*code did not work as expected : failed to make jQuery load first ... keep it here hoever*/
-/*!window.jQuery && document.write("<script type=\'text/javascript\'>var script = document.createElement(\'script\');script.type = \'text/javascript\';script.src = \'<?php echo PLX_PLUGINS;?>jquery/jquery.min.js\';document.getElementsByTagName(\'head\')[0].appendChild(script);<\/script>");*/
 	!window.jQuery.jGFeed && document.write(\'<script type="text/javascript" src="<?php echo PLX_PLUGINS;?>RSSroll/js/jquery.jgfeed.js"><\/script>\');
 /* !]]> */
 </script>
