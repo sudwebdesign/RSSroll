@@ -3,8 +3,8 @@
  * Plugin rssroll
  *
  * @package	PLX
- * @version	1.1
- * @date	12/04/2013
+ * @version	1.2
+ * @date	09/11/2013
  * @author	i M@N
  * @based on	Rockyhorror Blogroll
  * @disclaimer	may content unexpected lulz
@@ -185,8 +185,7 @@ if (extension_loaded('curl')) {
 /*check for curl*/
 	$curl = 1;
 	#echo 'curl : '.$curl;//yeah that's just 4 debug ; )
-}
-if ($curl == 1) {
+
 /*curl use simplepie*/
 	# lib/simplepie
 	require_once(PLX_PLUGINS."RSSroll/lib/simplepie.php");

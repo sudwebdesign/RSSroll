@@ -1,0 +1,5 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<document>
+	<parameter name="rssroll" type="cdata"><![CDATA[data/configuration/RSSroll.xml]]></parameter>
+	<parameter name="pub_title" type="cdata"><![CDATA[RSS]]></parameter>
+</document>
