@@ -3,9 +3,9 @@
  * Plugin rssroll
  *
  * @package	PLX
- * @version	1.2
- * @date	09/11/2013
- * @author	i M@N
+ * @version	1.2.1
+ * @date	10/11/2013
+ * @author	i M@N 
  * @based on	Rockyhorror Blogroll
  * @disclaimer	may content unexpected lulz
  **/
@@ -192,11 +192,12 @@ class RSSroll extends plxPlugin {
 		}
 		else {
 			/*use javascript fallback*/
-			/*require PluXML jQuery plugin*/
 			echo '<script type="text/javascript">
 			/* <![CDATA[ */
-			!window.jQuery && document.write(\'<script type="text/javascript" src="<?php echo PLX_PLUGINS;?>jquery/jquery.min.js"><\/script>\');
-			!window.jQuery.jGFeed && document.write(\'<script type="text/javascript" src="<?php echo PLX_PLUGINS;?>RSSroll/js/jquery.jgfeed.js"><\/script>\');
+				if (typeof jQuery == "undefined") {
+					document.write(\'<script type="text/javascript" src="http://code.jquery.com/jquery-1.10.2.min.js"><\/script>\');
+				}			
+				document.write(\'<script type="text/javascript" src="'.PLX_PLUGINS.'RSSroll/js/jquery.jgfeed.js"><\/script>\');
 			/* !]]> */
 			</script>
 			';
