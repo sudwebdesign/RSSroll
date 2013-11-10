@@ -5,7 +5,7 @@
  * @package	PLX
  * @version	1.2.1
  * @date	10/11/2013
- * @author	i M@N 
+ * @author	i M@N
  * @based on	Rockyhorror Blogroll
  * @disclaimer	may content unexpected lulz
  **/
@@ -181,14 +181,10 @@ class RSSroll extends plxPlugin {
 		/*default number of items to display. 0 = all*/
 		$length = 5;
 
-		if (extension_loaded('curl')) {
-			/*check for curl*/
+		if ((extension_loaded('curl')) && ($this->getParams('curl_or_js') == 1)){/*check for curl*/
 			$curl = 1;
 			#echo 'curl : '.$curl;//yeah that's just 4 debug ; )
-
-			/*curl use simplepie*/
-			# lib/simplepie
-			require_once(PLX_PLUGINS."RSSroll/lib/simplepie.php");
+			require_once(PLX_PLUGINS."RSSroll/lib/simplepie.php");/*curl use simplepie*/
 		}
 		else {
 			/*use javascript fallback*/
