@@ -4,9 +4,9 @@
 plxToken::validateFormToken($_POST);
 
 
-$plxPlugin->getRSSroll(PLX_ROOT.$plxPlugin->getParam('rssroll'));
+$plxPlugin->getRSSroll(PLX_ROOT.PLX_CONFIG_PATH.'/plugins/'.$plxPlugin->getParam('rssroll'));
 
-# On édite les catégories
+# On Ã©dite les catÃ©gories
 if(!empty($_POST)) {
 	$plxPlugin->editRSSlist($_POST);
 	header('Location: plugin.php?p=RSSroll');
@@ -29,7 +29,7 @@ if(!empty($_POST)) {
 			<th><?php $plxPlugin->lang('L_ADMIN_LIST_DESC') ?></th>
 			<th><?php $plxPlugin->lang('L_ADMIN_LIST_LANG') ?></th>
 			<th><?php $plxPlugin->lang('L_ADMIN_LIST_ORDER') ?></th>
-			<th>&nbsp;</th>
+			<!--<th>&nbsp;</th>-->
 		</tr>
 	</thead>
 	<tbody>
@@ -52,7 +52,7 @@ if(!empty($_POST)) {
 				plxUtils::printInput($k.'_ordre', $ordre, 'text', '3-3');
 				echo '</td></tr>';
 			}
-			# On récupère le dernier identifiant
+			# On rÃ©cupÃ¨re le dernier identifiant
 			$a = array_keys($plxPlugin->rssList);
 			rsort($a);
 		}
@@ -91,4 +91,3 @@ if(!empty($_POST)) {
 	</p>
 
 </form>
-
