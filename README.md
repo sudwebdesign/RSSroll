@@ -1,9 +1,9 @@
 PluXML RSSroll plugin
 ======================
 
-RSSroll w/ favicons by [i M@N][ali0une_site] is a [PluXML][pluxml_site] plugin based on [Rockyhorror][Rockyhorror_site] RSSroll 0.5
+RSSroll w/ favicons 1.3 by [i M@N][ali0une_site] and [Thom@s][thomas_site] is a [PluXML][pluxml_site] plugin based on [Rockyhorror][Rockyhorror_site] RSSroll 0.5
 
-Fetches feeds with [SimplePie][simplepie_site] if curl is enabled, else fallback to javascript [jGFeed][jgfeed_site] Google Feed APi jQuery plugin
+Fetches feeds with [SimplePie][simplepie_site] if you choose curl in config (if enabled), else fallback to javascript [jGFeed][jgfeed_site] Google Feed APi jQuery plugin
 
 ## installation
 Require the PluXML [jQuery][jquery_site] plugin available at [Pluxml Official plugins][pluxml_plugins]
@@ -42,15 +42,19 @@ Original Blogroll is made by [Rockyhorror][Rockyhorror_site]
 
 [jGFeed][jgfeed_site] Google Feed APi jQuery plugin
 
+[succinct][succinct_site] A *tiny jQuery plugin for truncating multiple lines of text.
+
 [pluxml_site]: http://www.pluxml.org/
 [pluxml_plugins]: http://wiki.pluxml.org/index.php?page=Plugins+officiels
 [jquery_site]: http://www.jquery.com
 [simplepie_site]: http://simplepie.org/
 [jgfeed_site]: http://jquery-howto.blogspot.fr/2009/05/google-feeds-api-jquery-plugin.html
+[succinct_site]: http://micjamking.github.io/succinct/
+[thomas_site]: http://www.sudwebdesign.fr/
 [ali0une_site]: http://imanweb.free.fr
 [Rockyhorror_site]: http://thepoulpe.net
-[issues]: http://github.com/ali0une/RSSroll/issues
-[mail_me]: http://github.com/inbox/new/ali0une
-[github_watch]: http://github.com/ali0une/RSSroll/toggle_watch
-[github_follow]: http://github.com/users/follow?target=ali0une
-[twitter_follow]: http://twitter.com/ali0une
+[issues]: http://github.com/sudwebdesign/RSSroll/issues
+[mail_me]: http://github.com/inbox/new/sudwebdesign
+[github_watch]: http://github.com/sudwebdesign/RSSroll/toggle_watch
+[github_follow]: http://github.com/users/follow?target=sudwebdesign
+[twitter_follow]: http://twitter.com/thomas_ingles
