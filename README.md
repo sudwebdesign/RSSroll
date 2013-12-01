@@ -36,7 +36,7 @@ Original Blogroll is made by [Rockyhorror][Rockyhorror_site]
 
 [jGFeed][jgfeed_site] Google Feed APi jQuery plugin
 
-[succinct][succinct_site] A *tiny jQuery plugin for truncating multiple lines of text.
+[Succinct][succinct_site] A *tiny jQuery plugin for truncating multiple lines of text.
 
 [pluxml_site]: http://www.pluxml.org/
 [pluxml_plugins]: http://wiki.pluxml.org/index.php?page=Plugins+officiels
