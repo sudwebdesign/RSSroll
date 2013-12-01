@@ -1,5 +1,7 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <document>
-	<parameter name="rssroll" type="cdata"><![CDATA[data/configuration/RSSroll.xml]]></parameter>
-	<parameter name="pub_title" type="cdata"><![CDATA[RSS]]></parameter>
+	<parameter name="rssroll" type="cdata"><![CDATA[data/configuration/MyRSSroll.xml]]></parameter>
+	<parameter name="pub_title" type="cdata"><![CDATA[My Favorites RSS]]></parameter>
+	<parameter name="truncate" type="numeric">161</parameter>
+	<parameter name="curlonly" type="string">oui</parameter>
 </document>
