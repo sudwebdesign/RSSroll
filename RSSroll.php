@@ -3,18 +3,18 @@
  * Plugin rssroll
  *
  * @package	PLX
- * @version	1.2.1
- * @date	10/11/2013
- * @author	i M@N
+ * @version	1.3 
+ * @date	01/12/2013
+ * @author	i M@N, thom@s
  * @based on	Rockyhorror Blogroll
  * @disclaimer	may content unexpected lulz
  **/
  
 
 class RSSroll extends plxPlugin {
-
+	public $config = null; # fichier des données
 	public $rssList = array(); # Tableau des rss
-	
+	public $sourcejs = null; # source jgfeed
 	/**
 	 * Constructeur de la classe rssroll
 	 *
@@ -27,6 +27,12 @@ class RSSroll extends plxPlugin {
 		# Appel du constructeur de la classe plxPlugin (obligatoire)
 		parent::__construct($default_lang);
 		
+		if(defined('PLX_CONF')) # version PluXml < 5.1.7
+				$this->config = dirname(PLX_CONF).'/'.$this->getParam('rssroll');
+		else # version PluXml >= 5.1.7
+				$this->config = PLX_ROOT.PLX_CONFIG_PATH.'/plugins/'.$this->getParam('rssroll');
+		
+		
 		# Autorisation d'acces à la configuration du plugin
 		$this->setConfigProfil(PROFIL_ADMIN, PROFIL_MANAGER);
 
@@ -36,6 +42,10 @@ class RSSroll extends plxPlugin {
 		# Déclarations des hooks
 		$this->addHook('showRSSrollHead', 'showRSSrollHead');
 		$this->addHook('showRSSroll','showRSSroll');
+		
+		if (($this->getParam('curlonly') == 'non')){/*check for curl*/
+			$this->addHook('ThemeEndBody', 'ThemeEndBody');
+		}
 	}
 
 	public function OnActivate() {
@@ -49,12 +59,12 @@ class RSSroll extends plxPlugin {
 		}
 	}
 
-	public function getRSSroll($filename) {
+	public function getRSSroll() {
 		
-		if(!is_file($filename)) return;
+		if(!is_file($this->config)) return;
 		
 		# Mise en place du parseur XML
-		$data = implode('',file($filename));
+		$data = implode('',file($this->config));
 		$parser = xml_parser_create(PLX_CHARSET);
 		xml_parser_set_option($parser,XML_OPTION_CASE_FOLDING,0);
 		xml_parser_set_option($parser,XML_OPTION_SKIP_WHITE,0);
@@ -134,12 +144,21 @@ class RSSroll extends plxPlugin {
 			}
 			$xml .= "</document>";
 			
-			# On écrit le fichier
-			if(plxUtils::write($xml, PLX_ROOT.PLX_CONFIG_PATH.'/plugins/'.$this->getParam('rssroll')))
+			# On écrit le fichier ## Origin ##
+			/*
+			if(plxUtils::write($xml, PLX_ROOT.$this->getParam('rssroll')))
 				return plxMsg::Info(L_SAVE_SUCCESSFUL);
 			else {
 				$this->rssList = $save;
-				return plxMsg::Error(L_SAVE_ERR.' '.PLX_ROOT.PLX_CONFIG_PATH.'/plugins/'.$this->getParam('rssroll'));
+				return plxMsg::Error(L_SAVE_ERR.' '.$filename);
+			}
+			*/
+			# On écrit le fichier ## New ##
+			if(plxUtils::write($xml, $this->config))
+				return plxMsg::Info(L_SAVE_SUCCESSFUL.' '.$this->config);
+			else {
+				$this->rssList = $save;
+				return plxMsg::Error(L_SAVE_ERR.' '.$this->config);
 			}			
 		}
 	}
@@ -180,112 +199,112 @@ class RSSroll extends plxPlugin {
 		$start = 0;
 		/*default number of items to display. 0 = all*/
 		$length = 5;
-
-		if ((extension_loaded('curl')) && ($this->getParams('curl_or_js') == 1)){/*check for curl*/
+		$curl = 0;
+		$footJs ='';
+		if ((extension_loaded('curl')) && ($this->getParam('curlonly') == 'oui')){/*check for curl*/
 			$curl = 1;
 			#echo 'curl : '.$curl;//yeah that's just 4 debug ; )
 			require_once(PLX_PLUGINS."RSSroll/lib/simplepie.php");/*curl use simplepie*/
 		}
-		else {
-			/*use javascript fallback*/
-			echo '<script type="text/javascript">
-			/* <![CDATA[ */
-				if (typeof jQuery == "undefined") {
-					document.write(\'<script type="text/javascript" src="http://code.jquery.com/jquery-1.10.2.min.js"><\/script>\');
-				}			
-				document.write(\'<script type="text/javascript" src="'.PLX_PLUGINS.'RSSroll/js/jquery.jgfeed.js"><\/script>\');
-			/* !]]> */
-			</script>
-			';
-		}
-		$this->getRSSroll(PLX_ROOT.PLX_CONFIG_PATH.'/plugins/'.$this->getParam('rssroll'));
+		$this->getRSSroll($this->config);
 		if(!$this->rssList) { return; }
-
-		#		if(!isset($format)) { $format = '<h2 style="background:url(\'http://g.etfv.co/#url\') no-repeat scroll 0 5px transparent;padding-left:20px;"><a target="_blank" href="#url" hreflang="#langue" title="#description">#title</a></h2>'; }
-		if(!isset($format)) { 
-			$format = '<h2 style="background:url(\'#icon\') no-repeat scroll 0 0 transparent;padding-left:20px;background-size:16px 16px;"><a target="_blank" href="#url" hreflang="#langue" title="#description">#title</a></h2>'; 
-		}
-
+		if(!isset($format)) { $format = '<h2 style="background:url(\'#icon\') no-repeat scroll 0 0 transparent;padding-left:20px;background-size:16px 16px;"><a target="_blank" href="#url" hreflang="#langue" title="#description">#title</a></h2>'; }
 		foreach($this->rssList as $link) {
-			if ($curl == 1) {
-				/*get favicon*/
-				$this->grab_image('http://g.etfv.co/'.$link['url'],md5($link['url']).'.ico');
-			}
-			#echo '<img src="'PLX_PLUGINS.'RSSroll/cache/favicon/'. md5($link['url']).'.ico" height="16px" width="16px" title="favicon" alt="favicon" />';//could also display img
+				$row = str_replace('"#url"','"#url"',$format);
+				$row = str_replace('#url',$link['url'],$row);
+				if ($curl == 1) {/*get favicon*/
+					$this->grab_image('http://g.etfv.co/'.$link['url'],md5($link['url']).'.ico');
+					$row = str_replace('#icon',PLX_PLUGINS.'RSSroll/cache/favicon/'.md5($link['url']).'.ico',$row);
+				}
+				else {
+					$row = str_replace('#icon','http://g.etfv.co/'.$link['url'],$row);
+				}
+				$row = str_replace('#description',plxUtils::strCheck($link['description']),$row);
+				$row = str_replace('#title',plxUtils::strCheck($link['title']),$row);
+				$row = str_replace('#langue',plxUtils::strCheck($link['langue']),$row);
+				echo $row;
+				if ($curl == 1) {
+					/*We'll process this feed with some options*/
+					$feed = new SimplePie();
+					$feed -> set_feed_url($link['url']);
+					$feed -> set_cache_location(PLX_PLUGINS . 'RSSroll/cache');
+					$feed -> enable_cache(true);
+					$feed -> set_cache_duration(3600);
+					/*This makes sure that the content is sent to the browser as text/html and the UTF-8 character set (since we didn't change it)*/
+					$feed->handle_content_type();
+					$feed->init();
+					/*Here, we'll loop through all of the items in the feed, and $item represents the current item in the loop.*/
+					foreach ($feed->get_items($start,$length) as $item):
+						echo '<li class="feed"><a target="_blank" href="'.$item->get_permalink().'" title="'.$item->get_title().'">'.$item->get_title().'</a></li>';
+						echo '<div class="description">'.$this->tronque($item->get_description(),$this->getParam('truncate')).'</div>';
+						echo '<p class="date">'.$this->getLang('L_POSTED_ON').' : '.$item->get_date('Y/m/d h:i').'</p>';
+					endforeach;
+				}
+				else {
+					/*javascript fall back mode*/
+					echo '<div id="RSSroll-'.$start.'"></div>';
+					$footJs .=  '
+					/*javascript '.$link['url'].' fallback mode*/
+					$(function(){
+						var feed = \''.$link['url'].'\';
+						var limit = \''.$length.'\';
 
-			##			$row = str_replace('"#url"','"#url" onclick="window.open(this.href);return false;"',$format);
-			$row = str_replace('"#url"','"#url"',$format);
-			$row = str_replace('#url',$link['url'],$row);
-			if ($curl == 1) {
-				$row = str_replace('#icon',PLX_PLUGINS.'RSSroll/cache/favicon/'.md5($link['url']).'.ico',$row);
-			}
-			else {
-				$row = str_replace('#icon','http://g.etfv.co/'.$link['url'],$row);
-			}
-			
-			$row = str_replace('#description',plxUtils::strCheck($link['description']),$row);
-			$row = str_replace('#title',plxUtils::strCheck($link['title']),$row);
-			$row = str_replace('#langue',plxUtils::strCheck($link['langue']),$row);
-			echo $row;
-			if ($curl == 1) {
-				/*We'll process this feed with some options*/
-				##$feed = new SimplePie($link['url'], PLX_PLUGINS . 'RSSroll/cache');//deprecated
-				$feed = new SimplePie();
-				$feed -> set_feed_url($link['url']);
-				$feed -> set_cache_location(PLX_PLUGINS . 'RSSroll/cache');
-				$feed -> enable_cache(true);
-				$feed -> set_cache_duration(3600);
-				/*This makes sure that the content is sent to the browser as text/html and the UTF-8 character set (since we didn't change it)*/
-				$feed->handle_content_type();
-				$feed->init();
-				##echo '<h2 style="background:url('.$feed->get_favicon().') no-repeat scroll 0 5px transparent;padding-left:20px;"><a target="_blank" href="'.$feed->get_permalink().'">'.$feed->get_title().'</a></h2>';//deprecated get_favicon()
-				#echo '<li>'.$feed->get_description().'</li>';//uncomment to display description
-				/*Here, we'll loop through all of the items in the feed, and $item represents the current item in the loop.*/
-				foreach ($feed->get_items($start,$length) as $item):
-					echo '<li><a target="_blank" href="'.$item->get_permalink().'" title="'.$item->get_title().'">'.$item->get_title().'</a> '.$item->get_date('Y/m/d').'</li>';//url? :: $item->get_id();
-					#echo '<p>'.$item->get_description().'</p>';
-					#echo '<p><small>Posted on '.$item->get_date('Y/m/d h:i').'</small></p>';
-				endforeach;
-			}
-			else {
-				/*javascript fall back mode*/
-				echo '<script type="text/javascript">
-				/*javascript '.$link['url'].' fallback mode*/
-				$(document).ready(function() {
-					var feed = \''.$link['url'].'\';
-					var limit = \''.$length.'\';
-					$.jGFeed(feed,
-					function(feeds){
-						if(!feeds){
-							// there was an error
-							return false;
-						}
+						$.jGFeed(feed,
+						function(feeds){
+							if(feeds.error){// there was an error
+								return false;
+							}
+							for(var i=0;i<feeds.entries.length;i++){
+								var entry = feeds.entries[i];
+								//console.dir(entry);//uncomment to display console log
+								var title = entry.title;
+								var link = \'href="\' +entry.link+ \'"\';//my pluxml add my host if href place in a.attribute, why? (little hack)
+								//var categories = entry.categories;//uncomment to display categories
+								var description = entry.content;//uncomment to display description
+								//var descriptionSnippet = entry.contentSnippet;//uncomment to display snippet description
+								var pubDate = new Date(entry.publishedDate);//entry.publishedDate;
 
-						for(var i=0;i<feeds.entries.length;i++){
-							var entry = feeds.entries[i];
-							//console.dir(entry);//uncomment to display console log
-							var title = entry.title;
-							var link = entry.link;
-							//var categories = entry.categories;//uncomment to display categories
-							//var description = entry.content;//uncomment to display description
-							var pubDate = entry.publishedDate;
+								var html = \'\';
+								html += \'<li class="feed"><a target="_blank" \' + link + \'" title="\' + title + \'">\' + title + \'</a></li>\';
+								//html += \'<p class="categories">\' + categories + \'</p>\';//uncomment to display categories
+								html += \'<div id="RSSroll'.$start.'entry\' + i +\'" class="description">\' + description + \'</div>\';//uncomment to display description
+								//html += \'<p class="description snippet">\' + descriptionSnippet + \'</p>\';//uncomment to display snippet description
+								html += \'<p class="date">'.$this->getLang('L_POSTED_ON').' : \' + pubDate.toLocaleString() + \'</p>\';
 
-							var html = \'\';
-							html += \'<li id="entry-\' + i +\'">\';
-							html += \'<a target="_blank" href="\' + link + \'" title="\' + title + \'">\' + title + \'</a> \' + pubDate;
-							//html += \'<span class="categories">\' + categories + \'</span>\';//uncomment to display categories
-							//html += \'<span class="description">\' + description + \'</span>\';//uncomment to display description
-							html += \'</li>\';
-							$("#RSSroll-'.$start.'").append($(html));
-						}
-					}, limit);
-				})
-				</script>
-				<div id="RSSroll-'.$start.'"></div>';
-			}
-			$start++;
-		}
+								$("#RSSroll-'.$start.'").append($(html));//$(html).truncated(36)
+								$("#RSSroll'.$start.'entry"+ i).succinct({size: '.plxUtils::strCheck($this->getParam("truncate")).'});/*truncate*/
+							}
+						}, limit);
+					})';
+				}// fi else
+				$start++;
+			}/*fi foreach*/
+		if ($curl == 0) {$this->sourcejs = $footJs;}//echo $footJs;		
 	}
+	
+	public function ThemeEndBody() {/* for jGfeed */
+?>
+	<script type="text/javascript">
+	if (typeof jQuery == 'undefined') {
+		document.write('<script type="text\/javascript" src="<?php echo PLX_PLUGINS ?>RSSroll\/js\/jquery.min.js"><\/script>');
+	}
+	</script>
+	<script type="text/javascript" src="<?php echo PLX_PLUGINS ?>RSSroll/js/jquery.jgfeed.js"></script>
+	<script type="text/javascript" src="<?php echo PLX_PLUGINS ?>RSSroll/js/jQuery.succinct.min.js"></script>
+	<script type="text/javascript">
+	   $(document).ready(function(){
+		  <?php	echo $this->sourcejs; ?>
+		});
+	</script>
+<?php
+	}
+	
+	public function tronque($chaine, $longueur = 369){/* for curl*/
+        if (empty ($chaine)){return "";}
+        elseif (strlen ($chaine) < $longueur){return $chaine;}
+        elseif (preg_match ("/(.{1,$longueur})\s./ms", $chaine, $match)){return $match [1] . "...";}
+        else{return substr ($chaine, 0, $longueur) . "...";}
+    }
 }
 	
 ?>
