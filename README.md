@@ -5,12 +5,6 @@ RSSroll w/ favicons 1.3 by [i M@N][ali0une_site] and [Thom@s][thomas_site] is a 
 
 Fetches feeds with [SimplePie][simplepie_site] if you choose curl in config (if enabled), else fallback to javascript [jGFeed][jgfeed_site] Google Feed APi jQuery plugin
 
-## installation
-Require the PluXML [jQuery][jquery_site] plugin available at [Pluxml Official plugins][pluxml_plugins]
-
-## Example
-
-* <http://imanweb.free.fr/blog/>
 
 ## Help make RSSroll better!
 
