@@ -285,7 +285,7 @@ class RSSroll extends plxPlugin {
 	public function ThemeEndBody() {/* for jGfeed */
 ?>
 	<script type="text/javascript">
-	if (typeof jQuery == 'undefined') {
+	if (typeof jQuery === "undefined") {
 		document.write('<script type="text\/javascript" src="<?php echo PLX_PLUGINS ?>RSSroll\/js\/jquery.min.js"><\/script>');
 	}
 	</script>
